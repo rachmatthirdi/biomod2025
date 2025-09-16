@@ -4,11 +4,10 @@ import { fontFamily } from "tailwindcss/defaultTheme";
 const config = {
   darkMode: ["class"],
   content: [
-    "./pages/**/*.{ts,tsx}",
-    "./components/**/*.{ts,tsx}",
-    "./app/**/*.{ts,tsx}",
-    "./src/**/*.{ts,tsx}",
-    "*.{js,ts,jsx,tsx,mdx}",
+    // Ini adalah versi yang lebih lengkap dan benar
+    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
+    "./components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   prefix: "",
   theme: {
@@ -58,9 +57,9 @@ const config = {
       },
 
       fontFamily: {
-        sans: ["Roboto", ...fontFamily.sans], // Set Roboto sebagai default sans-serif
-        heading: ["Poppins", ...fontFamily.sans], // Contoh font lain untuk heading
-        mono: ["Fira Code", ...fontFamily.mono], // Contoh font lain untuk kode
+        sans: ["Roboto", ...fontFamily.sans],
+        heading: ["Poppins", ...fontFamily.sans],
+        mono: ["Fira Code", ...fontFamily.mono],
       },
 
       borderRadius: {

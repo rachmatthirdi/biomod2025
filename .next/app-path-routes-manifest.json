@@ -1,8 +1,8 @@
 {
   "/_not-found/page": "/_not-found",
-  "/team/page": "/team",
-  "/ideas/page": "/ideas",
-  "/page": "/",
+  "/elsi/page": "/elsi",
   "/lab-notebook/page": "/lab-notebook",
-  "/elsi/page": "/elsi"
+  "/page": "/",
+  "/ideas/page": "/ideas",
+  "/team/page": "/team"
 }
