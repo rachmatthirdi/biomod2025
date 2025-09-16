@@ -10,11 +10,13 @@ const nextConfig = {
     unoptimized: true,
   },
   experimental: {
-    optimizePackageImports: ['lucide-react'],
+    optimizePackageImports: ["lucide-react"],
   },
   devIndicators: false,
-
-
-}
-
-export default nextConfig
+  output: "export",
+  basePath: "/biomod2025",
+  assetPrefix: "/biomod2025",
+  images: {
+    unoptimized: true,
+  },
+};

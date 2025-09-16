@@ -1,0 +1,72 @@
+[
+  {
+    "id": 1,
+    "name": "Dr. Arina Lestari",
+    "title": "Lead Researcher, Genomics",
+    "image": "/team/team.png",
+    "description": "Dr. Lestari adalah seorang ahli dalam sekuensing genom dan biologi komputasi. Penelitiannya berfokus pada identifikasi penanda genetik untuk penyakit langka."
+  },
+  {
+    "id": 2,
+    "name": "Budi Santoso, M.Sc.",
+    "title": "Data Scientist, Bioinformatics",
+    "image": "/team/team.png",
+    "description": "Budi mengkhususkan diri dalam analisis data skala besar dan pengembangan algoritma machine learning untuk memprediksi interaksi protein-protein."
+  },
+  {
+    "id": 3,
+    "name": "Citra Dewi",
+    "title": "Lab Manager & Specialist",
+    "image": "/team/team.png",
+    "description": "Citra bertanggung jawab atas operasional laboratorium sehari-hari dan ahli dalam teknik kultur sel dan mikroskopi canggih."
+  },
+  {
+    "id": 4,
+    "name": "Citra Dewi",
+    "title": "Lab Manager & Specialist",
+    "image": "/team/team.png",
+    "description": "Citra bertanggung jawab atas operasional laboratorium sehari-hari dan ahli dalam teknik kultur sel dan mikroskopi canggih."
+  },
+  {
+    "id": 5,
+    "name": "Citra Dewi",
+    "title": "Lab Manager & Specialist",
+    "image": "/team/team.png",
+    "description": "Citra bertanggung jawab atas operasional laboratorium sehari-hari dan ahli dalam teknik kultur sel dan mikroskopi canggih."
+  },
+  {
+    "id": 6,
+    "name": "Citra Dewi",
+    "title": "Lab Manager & Specialist",
+    "image": "/team/team.png",
+    "description": "Citra bertanggung jawab atas operasional laboratorium sehari-hari dan ahli dalam teknik kultur sel dan mikroskopi canggih."
+  },
+  {
+    "id": 7,
+    "name": "Citra Dewi",
+    "title": "Lab Manager & Specialist",
+    "image": "/team/team.png",
+    "description": "Citra bertanggung jawab atas operasional laboratorium sehari-hari dan ahli dalam teknik kultur sel dan mikroskopi canggih."
+  },
+  {
+    "id": 8,
+    "name": "Citra Dewi",
+    "title": "Lab Manager & Specialist",
+    "image": "/team/team.png",
+    "description": "Citra bertanggung jawab atas operasional laboratorium sehari-hari dan ahli dalam teknik kultur sel dan mikroskopi canggih."
+  },
+  {
+    "id": 9,
+    "name": "Citra Dewi",
+    "title": "Lab Manager & Specialist",
+    "image": "/team/team.png",
+    "description": "Citra bertanggung jawab atas operasional laboratorium sehari-hari dan ahli dalam teknik kultur sel dan mikroskopi canggih."
+  },
+  {
+    "id": 10,
+    "name": "Rachmat Thirdi",
+    "title": "prompt engineer, yapping specialist",
+    "image": "/team/thirdi.png",
+    "description": "Thirdi tidak bertanggung jawab atas operasional web dan ahli dalam teknik yapping."
+  }
+]

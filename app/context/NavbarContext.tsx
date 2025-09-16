@@ -1,13 +1,6 @@
 "use client";
 
-import { is } from "date-fns/locale";
-import React, {
-  createContext,
-  useState,
-  useContext,
-  ReactNode,
-  useEffect,
-} from "react";
+import React, { createContext, useState, useContext, ReactNode } from "react";
 
 // Tentukan tipe untuk posisi navbar
 type NavbarPosition = "top" | "left" | "right";
@@ -20,22 +13,36 @@ interface NavbarContextType {
 
 // Buat Konteks dengan nilai default
 const NavbarContext = createContext<NavbarContextType | undefined>(undefined);
-const isMobile = typeof window !== "undefined" && window.innerWidth < 1280;
 
 // Buat Provider yang akan membungkus aplikasi Anda
+// Ganti seluruh fungsi NavbarProvider Anda dengan yang ini
 export function NavbarProvider({ children }: { children: ReactNode }) {
-  const [navbarPosition, setNavbarPositionState] = isMobile
-    ? useState<NavbarPosition>("top")
-    : useState<NavbarPosition>("left");
+  // Panggil useState HANYA SEKALI dan tentukan nilai awal di dalamnya
+  const [navbarPosition, setNavbarPositionState] = useState<NavbarPosition>(
+    () => {
+      // Gunakan fungsi ini untuk "lazy initial state", yang hanya berjalan sekali
+      if (typeof window !== "undefined") {
+        // 1. Cek localStorage terlebih dahulu
+        const savedPosition = localStorage.getItem(
+          "navbarGlobalPosition"
+        ) as NavbarPosition;
+        if (savedPosition) {
+          return savedPosition;
+        }
 
-  useEffect(() => {
-    const savedPosition = localStorage.getItem(
-      "navbarGlobalPosition"
-    ) as NavbarPosition;
-    if (savedPosition) {
-      setNavbarPositionState(savedPosition);
+        // 2. Jika tidak ada, tentukan berdasarkan ukuran layar
+        const isMobile = window.innerWidth < 1280;
+        return isMobile ? "top" : "left";
+      }
+
+      // Fallback default jika window tidak tersedia (misalnya saat server-side rendering)
+      return "left";
     }
-  }, []);
+  );
+
+  // useEffect tidak lagi diperlukan untuk mengambil data dari localStorage,
+  // karena sudah ditangani saat inisialisasi state di atas. Ini juga
+  // menyelesaikan warning 'exhaustive-deps'.
 
   // Fungsi untuk mengubah state dan menyimpannya ke localStorage
   const setNavbarPosition = (position: NavbarPosition) => {

@@ -113,7 +113,9 @@ export default function Navbar() {
   // Handler long-press untuk item biasa
   const longPressHandlers = useLongPress(
     (element: HTMLElement) =>
-      handleMouseEnter({ currentTarget: element } as any),
+      handleMouseEnter({
+        currentTarget: element,
+      } as React.MouseEvent<HTMLElement>),
     () => setTooltip(null)
   );
 
@@ -129,7 +131,9 @@ export default function Navbar() {
       else setNavbarPosition("top");
 
       // Aksi 2: Tampilkan tooltip
-      handleMouseEnter({ currentTarget: element } as any);
+      handleMouseEnter({
+        currentTarget: element,
+      } as React.MouseEvent<HTMLElement>);
     },
     () => setTooltip(null) // Sembunyikan tooltip saat dilepas
   );
