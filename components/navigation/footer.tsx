@@ -64,15 +64,31 @@ const contactDetails = [
     text: "794 Mcallister St, San Francisco, 94102",
     href: "#",
   },
-];
-
-// Data untuk ikon sosial media
-const socialLinks = [
-  { icon: <Facebook size={18} />, href: "#", label: "Facebook" },
-  { icon: <Twitter size={18} />, href: "#", label: "Twitter" },
-  { icon: <Instagram size={18} />, href: "#", label: "Instagram" },
-  { icon: <Linkedin size={18} />, href: "#", label: "LinkedIn" },
-  { icon: <Youtube size={18} />, href: "#", label: "YouTube" },
+  {
+    icon: <Facebook size={16} />,
+    text: "Facebook",
+    href: "#",
+  },
+  {
+    icon: <Twitter size={16} />,
+    text: "Twitter",
+    href: "#",
+  },
+  {
+    icon: <Instagram size={16} />,
+    text: "Instagram",
+    href: "#",
+  },
+  {
+    icon: <Linkedin size={16} />,
+    text: "Linkedin",
+    href: "#",
+  },
+  {
+    icon: <Youtube size={16} />,
+    text: "Youtube",
+    href: "#",
+  },
 ];
 
 export default function Footer() {
