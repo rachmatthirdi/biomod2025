@@ -219,7 +219,7 @@ function TransformingMember({
       className="absolute top-1/3 left-1/2"
     >
       <motion.figure
-        className="relative w-[20vh] xl:w-[400px] aspect-square flex-shrink-0 overflow-hidden cursor-pointer"
+        className="relative w-[20vh] lg:w-[400px] aspect-square flex-shrink-0 overflow-hidden cursor-pointer"
         style={{
           borderRadius,
           scale: scrollScale,
@@ -251,7 +251,7 @@ function TransformingMember({
             exit={{ opacity: 0, x: -15 }}
             transition={{ duration: 0.5 }}
           >
-            <h3 className="font-semibold text-xs xl:text-lg mt-2 xl:mt-5">
+            <h3 className="font-semibold text-xs lg:text-lg mt-2 lg:mt-5">
               {member.name}
             </h3>
           </motion.div>
@@ -345,24 +345,27 @@ export default function TeamPage() {
 
   return (
     <div className={`bg-background`}>
-      <div ref={scrollContainerRef} className="relative h-[200vh]">
-        <div className="sticky top-0 xl:mb-20 xl:h-[160vh] h-[70vh] flex flex-row justify-center items-center">
+      <div ref={scrollContainerRef} className="p-10 m-10 relative h-[200vh]">
+        <div className="sticky top-1 lg:py-5 lg:h-[180vh] h-[100vh] flex flex-row justify-center items-center">
           <motion.div
             style={{
               opacity: useTransform(scrollYProgress, [0, 0.15], [1, 0]),
             }}
             className="absolute top-[2%] left-0 right-0 text-center z-10"
           >
-            <h2 className="text-3xl font-bold">
+            <h2 className="text-xl font-bold">
               Research Groups & Specializations
             </h2>
           </motion.div>
-          <div className={`${appliedMarginClass}`}>
+
+          <div
+            className={`${appliedMarginClass} top-0 lg:top-0 left-0 right-0 bottom-0 absolute justify-center items-center`}
+          >
             <motion.div
               style={{ opacity: listTitlesOpacity }}
               className="absolute inset-0 w-full h-full pointer-events-none"
             >
-              <div className="relative w-full max-w-5xl h-full mx-auto">
+              <div className="relative w-full h-full mx-auto">
                 {/* REFACTOR: Simplified title rendering loop */}
                 {groupTitlesData.map((title) => {
                   const writingModeClass =
@@ -377,7 +380,7 @@ export default function TeamPage() {
                           title.positionKey as keyof typeof activeLayout.groupTitlePositions
                         ]
                       }
-                      className={`absolute top-1/2 left-1/2 font-semibold  text-lg xl:text-xl ${writingModeClass}`}
+                      className={`absolute top-1/2 left-1/2 font-semibold  text-lg lg:text-lg ${writingModeClass}`}
                     >
                       {title.text}
                     </motion.h4>
@@ -413,31 +416,30 @@ export default function TeamPage() {
 
             <AnimatePresence>
               {selectedMember && (
-                <>
+                // 1. Container utama sebagai backdrop dan wadah flex untuk centering
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="fixed inset-0 bg-black/60 z-30 flex justify-center items-center p-4"
+                  onClick={() => setSelectedMember(null)} // Klik di area backdrop akan menutup kartu
+                >
+                  {/* 2. Kartu informasi di dalamnya, posisinya diatur oleh flex parent */}
                   <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    className="fixed inset-0 bg-black/60 z-30"
-                    onClick={() => setSelectedMember(null)}
-                  />
-                  <motion.div
-                    className="absolute top-1/3 left-2/3 z-40"
-                    style={{ x: "180px", y: "-50%" }}
-                    variants={cardVariants}
+                    className="relative w-full max-w-sm" // Anda bisa sesuaikan max-w-sm jika perlu
+                    variants={cardVariants} // Varian animasi Anda tetap bisa digunakan
                     initial="hidden"
                     animate="visible"
                     exit="exit"
                     transition={{ duration: 0.5, ease: "easeInOut" }}
+                    onClick={(e) => e.stopPropagation()} // Mencegah klik di dalam kartu ikut menutup modal
                   >
-                    <div className="w-full max-w-sm">
-                      <TeamInfoCard
-                        member={selectedMember}
-                        onClose={() => setSelectedMember(null)}
-                      />
-                    </div>
+                    <TeamInfoCard
+                      member={selectedMember}
+                      onClose={() => setSelectedMember(null)}
+                    />
                   </motion.div>
-                </>
+                </motion.div>
               )}
             </AnimatePresence>
           </div>

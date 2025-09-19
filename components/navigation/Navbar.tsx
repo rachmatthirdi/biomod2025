@@ -147,7 +147,7 @@ export default function Navbar() {
     if (!mounted) return; // Hanya jalankan jika sudah di client
 
     const handleResize = () => {
-      const isMobile = window.innerWidth < 1280;
+      const isMobile = window.innerWidth < 1080;
       if (isMobile && navbarPosition === "top") {
         setNavbarPosition("left"); // Otomatis ke kiri di mobile jika posisi 'top'
       }
@@ -179,8 +179,8 @@ export default function Navbar() {
 
   const positionClasses = {
     top: `top-0 left-1/2 -translate-x-1/2 w-[90vw] xl:w-[70vw] h-[50px] rounded-3xl border xl:my-5 my-3 mx-auto`,
-    left: `top-1/2 -translate-y-1/2 left-0 w-[100px] h-[50vh] rounded-3xl border xl:mx-5 mx-3`,
-    right: `top-1/2 -translate-y-1/2 right-0 w-[100px] h-[50vh] rounded-3xl border xl:mx-5 mx-3`,
+    left: `top-1/2 -translate-y-1/2 left-0 w-[50px] h-[50vh] rounded-3xl border xl:mx-5 mx-3`,
+    right: `top-1/2 -translate-y-1/2 right-0 w-[50px] h-[50vh] rounded-3xl border xl:mx-5 mx-3`,
   };
 
   const layoutClasses = {
@@ -202,10 +202,10 @@ export default function Navbar() {
         className={`fixed z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 transition-all duration-300 ${positionClasses[navbarPosition]}`}
       >
         <div
-          className={`container h-full mx-auto px-2 flex justify-between items-center ${layoutClasses[navbarPosition]}`}
+          className={`container h-full py-1 lg:py-0 lg:px-5 mx-auto px-2 flex justify-between items-center ${layoutClasses[navbarPosition]}`}
         >
           <div
-            className="cursor-pointer p-2"
+            className="cursor-pointer p-1"
             {...logoLongPressHandlers}
             onMouseEnter={handleMouseEnter}
             data-tooltip={`Long-press to change navbar position`}
@@ -214,9 +214,9 @@ export default function Navbar() {
               <Image
                 src="/assets/icon/logo-lama.svg"
                 alt="Logo Icon"
-                width={64}
-                height={64}
-                className="h-16 xl:h-16 aspect-square"
+                width={32}
+                height={32}
+                className="!h-8 !w-8 !xl:h-10"
               />
             </Link>
           </div>
@@ -230,8 +230,10 @@ export default function Navbar() {
               <div key={item.name} className="relative">
                 <Button
                   variant="ghost"
-                  className={`flex items-center !h-16 !w-16 !my-6 gap-2 ${
-                    pathname === item.href && isHorizontal ? "bg-accent" : ""
+                  className={`flex items-center !h-2 !w-2 m-2 p-5 lg:m-10 !lg:p-4 ${
+                    pathname === item.href
+                      ? "bg-accent p-5 mx-5 lg:px-16 lg:py-5"
+                      : ""
                   }`}
                   onClick={() => handleMainLinkClick(item)}
                   {...longPressHandlers}
@@ -239,7 +241,7 @@ export default function Navbar() {
                   data-tooltip={`${item.name} page`}
                 >
                   <item.icon
-                    className={`!h-10 !w-10 ${
+                    className={`!h-6 !w-6 ${
                       pathname === item.href && !isHorizontal
                         ? "text-primary"
                         : ""

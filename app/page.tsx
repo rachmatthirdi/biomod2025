@@ -73,39 +73,50 @@ export default function HomePage() {
 
         {/* Features Section */}
         <section className="py-20">
-          <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-bold text-center mb-12">
-              Platform Features
-            </h2>
-            <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-8">
-              <div className="text-center">
-                <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <span className="text-2xl">💡</span>
-                </div>
-                <h3 className="text-xl font-semibold mb-2">Innovation Hub</h3>
-                <p className="text-muted-foreground">
-                  Centralized space for research ideas and concepts
-                </p>
-              </div>
-              <div className="text-center">
-                <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <span className="text-2xl">⚖️</span>
-                </div>
-                <h3 className="text-xl font-semibold mb-2">Ethics Framework</h3>
-                <p className="text-muted-foreground">
-                  Comprehensive ELSI considerations
-                </p>
-              </div>
-              <div className="text-center">
-                <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <span className="text-2xl">📊</span>
-                </div>
-                <h3 className="text-xl font-semibold mb-2">Documentation</h3>
-                <p className="text-muted-foreground">
-                  Detailed lab notebook and progress tracking
-                </p>
-              </div>
-            </div>
+          <div className="sketchfab-embed-wrapper">
+            <iframe
+              title="Chlamydomonas"
+              frameBorder="0"
+              allowFullScreen
+              allow="autoplay; fullscreen; xr-spatial-tracking"
+              src="https://sketchfab.com/models/bb65326ef6724edf87934787000b32df/embed"
+              style={{ width: "100%", height: "480px" }}
+            ></iframe>
+            <p
+              style={{
+                fontSize: 13,
+                fontWeight: "normal",
+                margin: 5,
+                color: "#4A4A4A",
+              }}
+            >
+              <a
+                href="https://sketchfab.com/3d-models/chlamydomonas-bb65326ef6724edf87934787000b32df?utm_medium=embed&utm_campaign=share-popup&utm_content=bb65326ef6724edf87934787000b32df"
+                target="_blank"
+                rel="nofollow"
+                style={{ fontWeight: "bold", color: "#1CAAD9" }}
+              >
+                Chlamydomonas
+              </a>{" "}
+              by{" "}
+              <a
+                href="https://sketchfab.com/arloopa?utm_medium=embed&utm_campaign=share-popup&utm_content=bb65326ef6724edf87934787000b32df"
+                target="_blank"
+                rel="nofollow"
+                style={{ fontWeight: "bold", color: "#1CAAD9" }}
+              >
+                arloopa
+              </a>{" "}
+              on{" "}
+              <a
+                href="https://sketchfab.com?utm_medium=embed&utm_campaign=share-popup&utm_content=bb65326ef6724edf87934787000b32df"
+                target="_blank"
+                rel="nofollow"
+                style={{ fontWeight: "bold", color: "#1CAAD9" }}
+              >
+                Sketchfab
+              </a>
+            </p>
           </div>
         </section>
 

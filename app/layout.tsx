@@ -22,6 +22,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head />
       <body className={roboto.className} suppressHydrationWarning>
         <ThemeProvider
           attribute="class"
@@ -30,10 +31,12 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <NavbarProvider>
-            <Navbar />
-            <main className="pt-0">{children}</main>
-            <Footer />
+            <div className="flex flex-col min-h-screen">
+              <Navbar />
+              <main className="flex-grow pt-0">{children}</main>
+            </div>
           </NavbarProvider>
+          <Footer />
         </ThemeProvider>
       </body>
     </html>
