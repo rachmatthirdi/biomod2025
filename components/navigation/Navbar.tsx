@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback, memo } from "react";
+import { useState, useEffect, useRef, useCallback} from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
@@ -10,7 +10,6 @@ import ThemeToggle from "./ThemeToggle";
 import { useLongPress } from "@/hooks/useLongPress";
 import { navItems, NavItem } from "@/lib/navData";
 import { useNavbar } from "@/app/context/NavbarContext";
-import { cn } from "@/lib/utils";
 
 // ====================================================================
 // KOMPONEN MEMOIZED UNTUK SETIAP ITEM NAVIGASI
