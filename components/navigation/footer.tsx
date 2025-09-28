@@ -38,14 +38,6 @@ const footerLinks = [
   },
 ];
 
-// Data untuk sosial media
-// const socialLinks = [
-//   { name: "Facebook", icon: <Facebook size={20} />, href: "#" },
-//   { name: "Twitter", icon: <Twitter size={20} />, href: "#" },
-//   { name: "Instagram", icon: <Instagram size={20} />, href: "#" },
-//   { name: "Linkedin", icon: <Linkedin size={20} />, href: "#" },
-//   { name: "Youtube", icon: <Youtube size={20} />, href: "#" },
-// ];
 
 // Data untuk kontak
 const contactDetails = [
@@ -101,19 +93,6 @@ export default function Footer() {
             <p className="mt-4 text-sm">
               Deskripsi singkat tentang tim atau proyek Anda di sini.
             </p>
-            {/* PERBAIKAN: Menambahkan render untuk social media */}
-            {/* <div className="flex space-x-4 mt-6">
-              {socialLinks.map((link) => (
-                <a
-                  key={link.name}
-                  href={link.href}
-                  className="hover:text-primary transition-colors"
-                  aria-label={link.name}
-                >
-                  {link.icon}
-                </a>
-              ))}
-            </div> */}
           </div>
 
           {/* Kolom Link Dinamis */}
