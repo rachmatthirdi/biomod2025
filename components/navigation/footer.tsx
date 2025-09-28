@@ -1,51 +1,56 @@
 "use client";
+
 import Link from "next/link";
 import { useState } from "react";
 import {
-  Facebook,
-  Twitter,
-  Instagram,
-  Linkedin,
-  Youtube,
+  // Facebook,
+  // Twitter,
+  // Instagram,
+  // Linkedin,
+  // Youtube,
   Mail,
   Phone,
   MapPin,
   ChevronDown,
 } from "lucide-react";
+import Image from "next/image"; // Jangan lupa impor Image
 
-// Data untuk link di footer agar mudah dikelola
+// Data untuk link di footer
 const footerLinks = [
   {
     title: "Ideas",
     links: [
-      { name: "Relevance", href: "#" },
-      { name: "Goals & Success Criteria", href: "#" },
-      { name: "Feasibility", href: "#" },
-      { name: "Challenges", href: "#" },
-      { name: "Design Process and Logic", href: "#" },
+      { name: "Relevance", href: "/ideas#relevance" },
+      { name: "Goals & Success", href: "/ideas#goals" },
+      { name: "Feasibility", href: "/ideas#feasibility" },
     ],
   },
   {
     title: "ELSI",
     links: [
-      { name: "What is ELSI?", href: "#" },
-      { name: "Ethical Issues", href: "#" },
-      { name: "Legal Issues", href: "#" },
-      { name: "Social Issues", href: "#" },
-      { name: "Reference", href: "#" },
+      { name: "What is ELSI?", href: "/elsi#what-is-elsi" },
+      { name: "Ethical Issues", href: "/elsi#ethical" },
+      { name: "Legal Issues", href: "/elsi#legal" },
     ],
   },
   {
     title: "Lab Notebook",
     links: [
-      { name: "Abstract", href: "#" },
-      { name: "Wetlab", href: "#" },
-      { name: "Computational", href: "#" },
-      { name: "Further Directions", href: "#" },
-      { name: "Lorem", href: "#" },
+      { name: "Abstract", href: "/lab-notebook#abstract" },
+      { name: "Wetlab", href: "/lab-notebook#wetlab" },
+      { name: "Computational", href: "/lab-notebook#computational" },
     ],
   },
 ];
+
+// Data untuk sosial media
+// const socialLinks = [
+//   { name: "Facebook", icon: <Facebook size={20} />, href: "#" },
+//   { name: "Twitter", icon: <Twitter size={20} />, href: "#" },
+//   { name: "Instagram", icon: <Instagram size={20} />, href: "#" },
+//   { name: "Linkedin", icon: <Linkedin size={20} />, href: "#" },
+//   { name: "Youtube", icon: <Youtube size={20} />, href: "#" },
+// ];
 
 // Data untuk kontak
 const contactDetails = [
@@ -64,64 +69,64 @@ const contactDetails = [
     text: "794 Mcallister St, San Francisco, 94102",
     href: "#",
   },
-  {
-    icon: <Facebook size={16} />,
-    text: "Facebook",
-    href: "#",
-  },
-  {
-    icon: <Twitter size={16} />,
-    text: "Twitter",
-    href: "#",
-  },
-  {
-    icon: <Instagram size={16} />,
-    text: "Instagram",
-    href: "#",
-  },
-  {
-    icon: <Linkedin size={16} />,
-    text: "Linkedin",
-    href: "#",
-  },
-  {
-    icon: <Youtube size={16} />,
-    text: "Youtube",
-    href: "#",
-  },
 ];
 
 export default function Footer() {
-  // BARU: State untuk melacak bagian mana yang terbuka di mobile
   const [openSections, setOpenSections] = useState<{ [key: string]: boolean }>(
     {}
   );
 
-  // BARU: Fungsi untuk toggle status buka/tutup
+  // PERBAIKAN: Fungsi toggle hanya akan berjalan jika di mobile
   const toggleSection = (title: string) => {
-    setOpenSections((prev) => ({
-      ...prev,
-      [title]: !prev[title],
-    }));
+    // Cek lebar layar sebelum menjalankan fungsi
+    if (window.innerWidth < 768) {
+      // 768px adalah breakpoint default `md` di Tailwind
+      setOpenSections((prev) => ({
+        ...prev,
+        [title]: !prev[title],
+      }));
+    }
   };
+
   return (
-    // Menggunakan variabel tema semantik: bg-background, text-muted-foreground, border-border
     <footer className="bg-background text-muted-foreground border-t border-border">
       <div className="container mx-auto px-6 py-12">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-5">
-          {/* Kolom Logo dan Deskripsi (tidak ada perubahan signifikan) */}
+          {/* Kolom Logo dan Deskripsi */}
           <div className="col-span-1 md:col-span-2 lg:col-span-1">
-            {/* ... (kode logo, deskripsi, dan sosial media sama) */}
+            <Link href="/" className="flex items-center gap-2">
+              <Image
+                src="/assets/icon/logo-lama.svg"
+                alt="Logo"
+                width={32}
+                height={32}
+              />
+              <span className="font-bold text-lg text-foreground">Biomod</span>
+            </Link>
+            <p className="mt-4 text-sm">
+              Deskripsi singkat tentang tim atau proyek Anda di sini.
+            </p>
+            {/* PERBAIKAN: Menambahkan render untuk social media */}
+            {/* <div className="flex space-x-4 mt-6">
+              {socialLinks.map((link) => (
+                <a
+                  key={link.name}
+                  href={link.href}
+                  className="hover:text-primary transition-colors"
+                  aria-label={link.name}
+                >
+                  {link.icon}
+                </a>
+              ))}
+            </div> */}
           </div>
 
-          {/* Kolom Link Dinamis (MODIFIKASI DI SINI) */}
+          {/* Kolom Link Dinamis */}
           {footerLinks.map((section) => {
-            // BARU: Cek apakah section ini sedang terbuka
-            const isOpen = openSections[section.title];
+            const isOpen = !!openSections[section.title]; // Memastikan nilai boolean
 
             return (
               <div key={section.title}>
-                {/* BARU: Judul sekarang bisa di-klik untuk toggle di mobile */}
                 <div
                   className="flex justify-between items-center cursor-pointer md:cursor-auto"
                   onClick={() => toggleSection(section.title)}
@@ -129,10 +134,9 @@ export default function Footer() {
                   aria-expanded={isOpen}
                   aria-controls={`footer-section-${section.title}`}
                 >
-                  <h3 className="font-bold text-foreground mb-4 md:mb-4">
+                  <h3 className="font-bold text-foreground mb-4">
                     {section.title}
                   </h3>
-                  {/* BARU: Ikon Chevron yang hanya tampil di mobile dan berputar saat aktif */}
                   <ChevronDown
                     size={20}
                     className={`md:hidden transition-transform duration-300 ${
@@ -140,12 +144,12 @@ export default function Footer() {
                     }`}
                   />
                 </div>
-                {/* BARU: Modifikasi UL untuk dropdown di mobile */}
+                {/* PERBAIKAN: Logika kelas yang lebih bersih untuk mobile dropdown */}
                 <ul
                   id={`footer-section-${section.title}`}
-                  className={`space-y-3 overflow-hidden transition-all duration-300 ease-in-out md:max-h-none ${
-                    isOpen ? "max-h-96" : "max-h-0" // Buka/tutup dropdown
-                  }`}
+                  className={`space-y-3 transition-all duration-300 ease-in-out 
+                    md:block md:max-h-none md:overflow-visible 
+                    ${isOpen ? "max-h-96" : "max-h-0 overflow-hidden"}`}
                 >
                   {section.links.map((link) => (
                     <li key={link.name}>
@@ -168,7 +172,6 @@ export default function Footer() {
             <ul className="space-y-4">
               {contactDetails.map((item) => (
                 <li key={item.text} className="flex items-start space-x-3">
-                  {/* Ikon kontak menggunakan warna primary */}
                   <span className="mt-1 text-primary">{item.icon}</span>
                   <a
                     href={item.href}
@@ -182,10 +185,8 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Garis pemisah menggunakan border-border */}
         <hr className="my-8 border-border" />
 
-        {/* Bagian Copyright */}
         <div className="flex flex-col items-center justify-between sm:flex-row">
           <p className="text-sm">Copyright © 2025 Biomod</p>
           <p className="text-sm">All Rights Reserved</p>
