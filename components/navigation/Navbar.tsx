@@ -15,47 +15,47 @@ import { cn } from "@/lib/utils";
 // ====================================================================
 // KOMPONEN MEMOIZED UNTUK SETIAP ITEM NAVIGASI
 // ====================================================================
-const MemoizedNavItem = memo(function MemoizedNavItem({
-  item,
-  isActive,
-  isHorizontal,
-  onMouseEnter,
-  onMainLinkClick,
-  longPressHandlers,
-}: {
-  item: NavItem;
-  isActive: boolean;
-  isHorizontal: boolean;
-  onMouseEnter: (e: React.MouseEvent<HTMLElement>) => void;
-  onMainLinkClick: (item: NavItem) => void;
-  longPressHandlers: ReturnType<typeof useLongPress>;
-}) {
-  return (
-    <div key={item.name} className="relative">
-      <Button
-        variant="ghost"
-        className={cn(
-          "flex items-center !h-auto !w-auto m-2 p-3 lg:m-1 lg:p-2 transition-colors hover:bg-accent hover:text-accent-foreground hover:rounded-md",
-          isActive && "bg-accent text-accent-foreground rounded-md"
-        )}
-        onClick={() => onMainLinkClick(item)}
-        {...longPressHandlers}
-        onMouseEnter={onMouseEnter}
-        data-tooltip={`${item.name} page`}
-      >
-        <item.icon
-          className={cn(
-            "!h-6 !w-6",
-            isActive && !isHorizontal && "text-primary"
-          )}
-        />
-        <span className={cn(!isHorizontal ? "hidden" : "hidden lg:inline")}>
-          {item.name}
-        </span>
-      </Button>
-    </div>
-  );
-});
+// const MemoizedNavItem = memo(function MemoizedNavItem({
+//   item,
+//   isActive,
+//   isHorizontal,
+//   onMouseEnter,
+//   onMainLinkClick,
+//   longPressHandlers,
+// }: {
+//   item: NavItem;
+//   isActive: boolean;
+//   isHorizontal: boolean;
+//   onMouseEnter: (e: React.MouseEvent<HTMLElement>) => void;
+//   onMainLinkClick: (item: NavItem) => void;
+//   longPressHandlers: ReturnType<typeof useLongPress>;
+// }) {
+//   return (
+//     <div key={item.name} className="relative">
+//       <Button
+//         variant="ghost"
+//         className={cn(
+//           "flex items-center !h-auto !w-auto m-2 p-3 lg:m-1 lg:p-2 transition-colors hover:bg-accent hover:text-accent-foreground hover:rounded-md",
+//           isActive && "bg-accent text-accent-foreground rounded-md"
+//         )}
+//         onClick={() => onMainLinkClick(item)}
+//         {...longPressHandlers}
+//         onMouseEnter={onMouseEnter}
+//         data-tooltip={`${item.name} page`}
+//       >
+//         <item.icon
+//           className={cn(
+//             "!h-6 !w-6",
+//             isActive && !isHorizontal && "text-primary"
+//           )}
+//         />
+//         <span className={cn(!isHorizontal ? "hidden" : "hidden lg:inline")}>
+//           {item.name}
+//         </span>
+//       </Button>
+//     </div>
+//   );
+// });
 
 // ====================================================================
 // KOMPONEN NAVBAR UTAMA
@@ -253,9 +253,9 @@ export default function Navbar() {
               <div key={item.name} className="relative">
                 <Button
                   variant="ghost"
-                  className={`flex items-center lg:my-4 px-2 hover:bg-gray-200 hover:rounded-md${
+                  className={`flex items-center lg:my-4 px-2 hover:text-white hover:bg-gray-200 hover:rounded-md${
                     pathname === item.href
-                      ? "bg-white border-b-4 border-white hover:rounded-md"
+                      ? "bg-white border-b-4"
                       : ""
                   }`}
                   onClick={() => handleMainLinkClick(item)}
@@ -264,9 +264,9 @@ export default function Navbar() {
                   data-tooltip={`${item.name} page`}
                 >
                   <item.icon
-                    className={`!h-6 !w-6 ${
+                    className={`!h-6 !w-6  text-white${
                       pathname === item.href && !isHorizontal
-                        ? "text-primary"
+                        ? "text-primary "
                         : ""
                     }`}
                   />

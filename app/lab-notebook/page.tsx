@@ -17,7 +17,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { SearchIcon, ChevronRightIcon, XIcon, InfoIcon } from "lucide-react";
+import { SearchIcon } from "lucide-react";
 
 // ====================================================================
 // 1. DEFINISI TIPE & DATA
@@ -366,7 +366,7 @@ export default function SearchLayout() {
 
   useEffect(() => {
     if (!selectedItem && ALL_DATA.length > 0) setSelectedItem(ALL_DATA[0]);
-  }, []);
+  }, [selectedItem]);
   const resultsContainerRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (resultsContainerRef.current)
@@ -463,7 +463,7 @@ export default function SearchLayout() {
               >
                 {query ? (
                   <div className="text-center text-gray-500 dark:text-gray-400">
-                    <p>Pencarian tidak ditemukan untuk "{query}".</p>
+                    <p>Pencarian tidak ditemukan untuk &quot;{query}&quot;.</p>
                     {searchData.recommendations.length > 0 && (
                       <div className="mt-6">
                         <h4 className="font-semibold text-center mb-3">
