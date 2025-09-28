@@ -3,11 +3,6 @@
 import Link from "next/link";
 import { useState } from "react";
 import {
-  // Facebook,
-  // Twitter,
-  // Instagram,
-  // Linkedin,
-  // Youtube,
   Mail,
   Phone,
   MapPin,
