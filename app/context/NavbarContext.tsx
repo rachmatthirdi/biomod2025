@@ -31,7 +31,7 @@ export function NavbarProvider({ children }: { children: ReactNode }) {
         }
 
         // 2. Jika tidak ada, tentukan berdasarkan ukuran layar
-        const isMobile = window.innerWidth < 1280;
+        const isMobile = window.innerWidth < 1080;
         return isMobile ? "top" : "left";
       }
 

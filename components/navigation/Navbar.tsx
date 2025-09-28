@@ -1,15 +1,65 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback, memo } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import Image from "next/image";
+
 import { Button } from "@/components/ui/button";
 import ThemeToggle from "./ThemeToggle";
 import { useLongPress } from "@/hooks/useLongPress";
 import { navItems, NavItem } from "@/lib/navData";
 import { useNavbar } from "@/app/context/NavbarContext";
-import Image from "next/image";
+import { cn } from "@/lib/utils";
 
+// ====================================================================
+// KOMPONEN MEMOIZED UNTUK SETIAP ITEM NAVIGASI
+// ====================================================================
+const MemoizedNavItem = memo(function MemoizedNavItem({
+  item,
+  isActive,
+  isHorizontal,
+  onMouseEnter,
+  onMainLinkClick,
+  longPressHandlers,
+}: {
+  item: NavItem;
+  isActive: boolean;
+  isHorizontal: boolean;
+  onMouseEnter: (e: React.MouseEvent<HTMLElement>) => void;
+  onMainLinkClick: (item: NavItem) => void;
+  longPressHandlers: ReturnType<typeof useLongPress>;
+}) {
+  return (
+    <div key={item.name} className="relative">
+      <Button
+        variant="ghost"
+        className={cn(
+          "flex items-center !h-auto !w-auto m-2 p-3 lg:m-1 lg:p-2 transition-colors hover:bg-accent hover:text-accent-foreground hover:rounded-md",
+          isActive && "bg-accent text-accent-foreground rounded-md"
+        )}
+        onClick={() => onMainLinkClick(item)}
+        {...longPressHandlers}
+        onMouseEnter={onMouseEnter}
+        data-tooltip={`${item.name} page`}
+      >
+        <item.icon
+          className={cn(
+            "!h-6 !w-6",
+            isActive && !isHorizontal && "text-primary"
+          )}
+        />
+        <span className={cn(!isHorizontal ? "hidden" : "hidden lg:inline")}>
+          {item.name}
+        </span>
+      </Button>
+    </div>
+  );
+});
+
+// ====================================================================
+// KOMPONEN NAVBAR UTAMA
+// ====================================================================
 export default function Navbar() {
   const { navbarPosition, setNavbarPosition } = useNavbar();
   const [expandedItem, setExpandedItem] = useState<string | null>(null);
@@ -21,108 +71,88 @@ export default function Navbar() {
     transform: string;
   } | null>(null);
   const pathname = usePathname();
-
-  // Ganti useEffect deteksi tabrakan Anda dengan yang ini
-  useEffect(() => {
-    if (tooltip && tooltipRef.current) {
-      const tooltipEl = tooltipRef.current;
-      const tooltipRect = tooltipEl.getBoundingClientRect();
-      const viewportWidth = 100 * window.innerWidth;
-      const viewportHeight = 100 * window.innerHeight;
-      const gap = 10; // Jarak aman dari tepi layar
-
-      if (tooltipRect.right > viewportWidth) {
-        tooltipEl.style.left = `${viewportWidth - tooltipRect.width / 2}px`;
-      }
-
-      // 2. Cek & perbaiki jika tooltip keluar dari sisi KIRI layar
-      //    Kondisi `&& navbarPosition !== 'right'` SANGAT PENTING di sini.
-      //    Ini mencegah logika ini berjalan saat navbar di kanan, karena saat itu
-      //    tooltip memang seharusnya berada di sisi kiri.
-      if (tooltipRect.left < 0 && navbarPosition !== "right") {
-        tooltipEl.style.left = `${gap}px`;
-      }
-
-      // 3. Cek & perbaiki tabrakan vertikal (atas dan bawah)
-      if (tooltipRect.bottom > viewportHeight) {
-        tooltipEl.style.top = `${viewportHeight - tooltipRect.height - gap}px`;
-      }
-      if (tooltipRect.top < 0) {
-        tooltipEl.style.top = `${gap}px`;
-      }
-    }
-  }, [tooltip, navbarPosition]); // Pastikan dependency array menyertakan navbarPosition
-
-  // ====================================================================
-  // PERBAIKAN 1: MENGATASI HYDRATION ERROR
-  // State `mounted` untuk memastikan logika klien hanya berjalan setelah mounting.
-  // ====================================================================
   const [mounted, setMounted] = useState(false);
+
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  // Ganti fungsi showTooltip Anda dengan yang ini
-  const showTooltip = (element: HTMLElement) => {
-    const rect = element.getBoundingClientRect();
-    const tooltipText = element.getAttribute("data-tooltip") || "";
-    if (!tooltipText) return;
+  const showTooltip = useCallback(
+    (element: HTMLElement) => {
+      const rect = element.getBoundingClientRect();
+      const tooltipText = element.getAttribute("data-tooltip") || "";
+      if (!tooltipText) return;
 
-    let x = 0,
-      y = 0,
-      transform = "";
+      let x = 0,
+        y = 0,
+        transform = "";
+      const gap = 10;
 
-    const gap = 10; // Jarak yang Anda inginkan (10px)
-
-    switch (navbarPosition) {
-      case "left":
-        // Posisi: 10px di sebelah kanan ikon
-        x = rect.right + gap;
-        // Sejajarkan titik tengah vertikal tooltip dengan titik tengah vertikal ikon
-        y = rect.top + rect.height / 2;
-        // Transformasi: Geser ke atas sebesar 50% dari TINGGI tooltip itu sendiri
-        transform = "translateY(-50%)";
-        break;
-
-      case "right":
-        // Posisi: 10px di sebelah kiri ikon
-        x = rect.left - gap;
-        // Sejajarkan titik tengah vertikal
-        y = rect.top + rect.height / 2;
-        // Transformasi: Geser ke kiri 100% dari LEBAR tooltip, lalu geser ke atas 50% dari TINGGI tooltip
-        transform = "translateX(-100%) translateY(-50%)";
-        break;
-
-      default: // Untuk 'top' dan 'bottom'
-        // Posisi: 10px di bawah ikon
-        y = rect.bottom + gap;
-        // Sejajarkan titik tengah horizontal tooltip dengan titik tengah horizontal ikon
-        x = rect.left + rect.width / 2;
-        // Transformasi: Geser ke kiri sebesar 50% dari LEBAR tooltip itu sendiri
-        transform = "translateX(-50%)";
-        break;
-    }
-
-    setTooltip({ text: tooltipText, x, y, transform });
-  };
-
-  const handleMouseEnter = (e: React.MouseEvent<HTMLElement>) => {
-    showTooltip(e.currentTarget);
-  };
-
-  // Handler long-press untuk item biasa
-  const longPressHandlers = useLongPress(
-    (element: HTMLElement) =>
-      handleMouseEnter({
-        currentTarget: element,
-      } as React.MouseEvent<HTMLElement>),
-    () => setTooltip(null)
+      switch (navbarPosition) {
+        case "left":
+          x = rect.right + gap;
+          y = rect.top + rect.height / 2;
+          transform = "translateY(-50%)";
+          break;
+        case "right":
+          x = rect.left - gap;
+          y = rect.top + rect.height / 2;
+          transform = "translateX(-100%) translateY(-50%)";
+          break;
+        default:
+          y = rect.bottom + gap;
+          x = rect.left + rect.width / 2;
+          transform = "translateX(-50%)";
+          break;
+      }
+      setTooltip({ text: tooltipText, x, y, transform });
+    },
+    [navbarPosition]
   );
 
-  // ====================================================================
-  // PERBAIKAN 2: MEMPERBAIKI TOOLTIP PADA LOGO
-  // Menggabungkan logika ubah posisi DAN tampilkan/sembunyikan tooltip.
-  // ====================================================================
+  useEffect(() => {
+    if (tooltip && tooltipRef.current) {
+      const tooltipEl = tooltipRef.current;
+      const tooltipRect = tooltipEl.getBoundingClientRect();
+      const viewportWidth = window.innerWidth;
+      const viewportHeight = window.innerHeight;
+      const gap = 10;
+
+      let newLeft = tooltip.x;
+      let newTop = tooltip.y;
+
+      if (tooltipRect.right > viewportWidth) {
+        newLeft = viewportWidth - tooltipRect.width - gap;
+      }
+      if (tooltipRect.left < 0 && navbarPosition !== "right") {
+        newLeft = gap;
+      }
+      if (tooltipRect.bottom > viewportHeight) {
+        newTop = viewportHeight - tooltipRect.height - gap;
+      }
+      if (tooltipRect.top < 0) {
+        newTop = gap;
+      }
+
+      tooltipEl.style.left = `${newLeft}px`;
+      tooltipEl.style.top = `${newTop}px`;
+    }
+  }, [tooltip, navbarPosition]);
+
+  const handleMouseEnter = useCallback(
+    (e: React.MouseEvent<HTMLElement>) => {
+      showTooltip(e.currentTarget);
+    },
+    [showTooltip]
+  );
+
+  const hideTooltip = useCallback(() => setTooltip(null), []);
+
+  const longPressHandlers = useLongPress(
+    (element: HTMLElement) => showTooltip(element),
+    hideTooltip
+  );
+
   const logoLongPressHandlers = useLongPress(
     (element: HTMLElement) => {
       // Aksi 1: Ubah posisi navbar
@@ -138,49 +168,45 @@ export default function Navbar() {
     () => setTooltip(null) // Sembunyikan tooltip saat dilepas
   );
 
-  // ====================================================================
-  // PERBAIKAN 3: MEMPERBAIKI LOGIKA POSISI & MENGHILANGKAN DUPLIKASI
-  // Satu useEffect yang rapi untuk menangani posisi default saat resize/load.
-  // Logika ini sekarang hanya berjalan setelah `mounted`.
-  // ====================================================================
   useEffect(() => {
-    if (!mounted) return; // Hanya jalankan jika sudah di client
-
+    if (!mounted) return;
     const handleResize = () => {
       const isMobile = window.innerWidth < 1080;
       if (isMobile && navbarPosition === "top") {
-        setNavbarPosition("left"); // Otomatis ke kiri di mobile jika posisi 'top'
+        setNavbarPosition("left");
       }
       if (!isMobile && navbarPosition !== "top") {
-        setNavbarPosition("top"); // Otomatis ke atas di desktop jika posisi bukan 'top'
+        setNavbarPosition("top");
       }
     };
-
-    handleResize(); // Cek sekali saat komponen siap
+    handleResize();
     window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [mounted, navbarPosition, setNavbarPosition]);
 
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, [mounted, navbarPosition, setNavbarPosition]); // Dependensi yang benar
+  const handleMainLinkClick = useCallback(
+    (item: NavItem) => {
+      const isHorizontal = navbarPosition === "top";
+      if (
+        !isHorizontal ||
+        item.sections.length === 0 ||
+        expandedItem === item.name
+      ) {
+        window.location.href = item.href;
+      } else {
+        setExpandedItem(item.name);
+      }
+    },
+    [navbarPosition, expandedItem]
+  );
 
-  const handleMainLinkClick = (item: NavItem) => {
-    const isHorizontal = navbarPosition === "top";
-    if (!isHorizontal || item.sections.length === 0) {
-      window.location.href = item.href;
-      return;
-    }
-    if (expandedItem === item.name) {
-      window.location.href = item.href;
-    } else {
-      setExpandedItem(item.name);
-    }
-  };
+  const isHorizontal = navbarPosition === "top";
 
   const positionClasses = {
-    top: `top-0 left-1/2 -translate-x-1/2 w-[90vw] xl:w-[70vw] h-[50px] rounded-3xl border xl:my-5 my-3 mx-auto`,
-    left: `top-1/2 -translate-y-1/2 left-0 w-[50px] h-[50vh] rounded-3xl border xl:mx-5 mx-3`,
-    right: `top-1/2 -translate-y-1/2 right-0 w-[50px] h-[50vh] rounded-3xl border xl:mx-5 mx-3`,
+    top: "top-0 left-1/2 -translate-x-1/2 w-[90vw] xl:w-[70vw] h-[50px] rounded-3xl border xl:my-5 my-3 mx-auto",
+    left: "top-1/2 -translate-y-1/2 left-0 w-[50px] h-[50vh] rounded-3xl border xl:mx-5 mx-3",
+    right:
+      "top-1/2 -translate-y-1/2 right-0 w-[50px] h-[50vh] rounded-3xl border xl:mx-5 mx-3",
   };
 
   const layoutClasses = {
@@ -189,9 +215,6 @@ export default function Navbar() {
     right: "flex-col py-4 space-y-4",
   };
 
-  const isHorizontal = navbarPosition === "top";
-
-  // Jika belum mounted, render null agar tidak ada mismatch
   if (!mounted) {
     return null;
   }
@@ -199,7 +222,7 @@ export default function Navbar() {
   return (
     <>
       <nav
-        className={`fixed z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 transition-all duration-300 ${positionClasses[navbarPosition]}`}
+        className={`fixed z-50 bg-background/75 backdrop-blur supports-[backdrop-filter]:bg-background/60 transition-all duration-300 ${positionClasses[navbarPosition]}`}
       >
         <div
           className={`container h-full py-1 lg:py-0 lg:px-5 mx-auto px-2 flex justify-between items-center ${layoutClasses[navbarPosition]}`}
@@ -222,7 +245,7 @@ export default function Navbar() {
           </div>
 
           <div
-            className={`flex items-center ${
+            className={`flex items-center text-white ${
               isHorizontal ? "flex-row space-x-1" : "flex-col space-y-2"
             }`}
           >
@@ -230,9 +253,9 @@ export default function Navbar() {
               <div key={item.name} className="relative">
                 <Button
                   variant="ghost"
-                  className={`flex items-center !h-2 !w-2 m-2 p-5 lg:m-10 !lg:p-4 ${
+                  className={`flex items-center lg:my-4 px-2 hover:bg-gray-200 hover:rounded-md${
                     pathname === item.href
-                      ? "bg-accent p-5 mx-5 lg:px-16 lg:py-5"
+                      ? "bg-white border-b-4 border-white hover:rounded-md"
                       : ""
                   }`}
                   onClick={() => handleMainLinkClick(item)}
@@ -260,12 +283,13 @@ export default function Navbar() {
           </div>
 
           <div
-            className={`flex items-center ${
+            className={`flex items-center text-white ${
               isHorizontal
                 ? "flex-row space-x-2"
                 : "flex-col-reverse space-y-2 space-y-reverse"
             }`}
             onMouseEnter={handleMouseEnter}
+            onMouseLeave={hideTooltip}
             data-tooltip={`Toggle dark/light mode`}
           >
             <ThemeToggle />

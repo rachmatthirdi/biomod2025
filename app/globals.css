@@ -9,7 +9,7 @@
 @layer base {
   /* Variabel Tema (menggunakan set kedua yang lebih standar) */
   :root {
-    --background: 0 0% 100%;
+    --background: 200 54% 77%;
     --foreground: 222.2 84% 4.9%;
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
@@ -63,6 +63,37 @@
   html {
     font-family: "Roboto", sans-serif; /* Font default */
     scroll-behavior: smooth;
+  }
+
+  /* globals.css */
+
+  /* Untuk scrollbar khusus */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 8px; /* Lebar scrollbar */
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent; /* Latar belakang track */
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background-color: #cbd5e1; /* Warna thumb scrollbar */
+    border-radius: 4px; /* Sudut melengkung */
+    border: 2px solid transparent; /* Jarak dari tepi */
+    background-clip: padding-box; /* Pastikan border di luar warna */
+  }
+
+  /* Dark mode */
+  .dark .custom-scrollbar::-webkit-scrollbar-thumb {
+    background-color: #4a5568; /* Warna thumb untuk dark mode */
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background-color: #a0aec0; /* Warna thumb saat hover */
+  }
+
+  .dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background-color: #616e7f; /* Warna thumb saat hover di dark mode */
   }
 }
 

@@ -72,7 +72,7 @@ export default function HomePage() {
         </section>
 
         {/* Features Section */}
-        <section className="py-20">
+        {/* <section className="py-20">
           <div className="sketchfab-embed-wrapper">
             <iframe
               title="Chlamydomonas"
@@ -118,7 +118,7 @@ export default function HomePage() {
               </a>
             </p>
           </div>
-        </section>
+        </section> */}
 
         {/* Call to Action */}
         <section className="bg-primary/5 py-20">
